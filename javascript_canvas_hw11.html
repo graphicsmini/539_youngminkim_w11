@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<title>Canvas Example</title>
+	<style type="text/css">
+		canvas{
+			border: 1px solid #999999;
+            /* width: 80%;
+            height: 80%; */
+		}
+
+        body{
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+	</style>
+
+
+</head>
+<body onload="resizeCanvas();">
+
+    <canvas id="canvas" width="80%" height="80">
+    Your browser does not support the canvas element.
+    </canvas>
+    <h1>Javascript Canvas Homework</h1>
+    <div>
+      <input type="color" id="colorpick" value="#eeeeee">
+      <label>The colorpicker</label>
+    </div>
+
+    <script>
+        function resizeCanvas() {
+            var canvs = document.querySelector("canvas");
+            canvs.width = window.innerWidth*0.8;
+            canvs.height = window.innerHeight*0.8;
+        }
+
+        var canvas = document.querySelector("canvas");
+        var ctx = canvas.getContext("2d");
+        var x = 0;
+        var y = 0;
+        var color = 'red';
+        var radius = 10;
+        // draw();
+
+        function draw(){
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        window.addEventListener('mousemove', function(e) {
+            x = e.pageX
+            y = e.pageY
+        // console.log(e.pageX);
+        // console.log(e.pageY);
+            draw();
+        })
+
+        window.addEventListener('touchmove', touchDraw);
+        function touchDraw(e) {
+          x = e.touches[0].clientX;
+          y = e.touches[0].clientY;
+          draw();
+        };
+
+        window.addEventListener('keyup', function(e) {
+            // console.log(e.keyCode);
+            switch (e.keyCode) {
+              case 66:
+              color = 'blue';
+              break;
+              case 71:
+              color = 'green';
+              break;
+              case 82:
+              color = 'red';
+              break;
+              case 89:
+              color = 'yellow';
+              break;
+            }
+            draw();
+        })
+
+        window.addEventListener('keyup', function(e) {
+          switch (e.keyCode) {
+            case 38:
+            radius += 1;
+            break;
+            case 40:
+            if (radius == 1) {
+              radius = 1;
+              break;
+            } else {
+              radius -= 1;
+              break;
+            }
+          }
+          draw();
+        })
+
+        window.addEventListener('keyup', function(e) {
+          if (e.keyCode == 32) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+          // draw();
+        })
+
+        window.addEventListener('resize',function() {
+          resizeCanvas();
+          ctx.clearRect(0,0, canvas.width, canvas.height);
+        })
+
+        colorpick.addEventListener("change", checkColor);
+        function checkColor(e) {
+          color = event.target.value;
+        };
+
+    </script>
+
+
+
+</body>
+</html>
